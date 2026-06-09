@@ -1,0 +1,14 @@
+# Configuración de despliegue para Railway (config-as-code)
+# Docs: https://docs.railway.com/reference/config-as-code
+
+[build]
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+# Reinicia el contenedor si falla, hasta 3 veces.
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3
+# Comprobación de salud: OpenWebUI expone /health.
+healthcheckPath = "/health"
+healthcheckTimeout = 300
