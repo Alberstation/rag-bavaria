@@ -12,3 +12,7 @@ restartPolicyMaxRetries = 3
 # Comprobación de salud: OpenWebUI expone /health.
 healthcheckPath = "/health"
 healthcheckTimeout = 300
+
+[deploy.volumes]
+# Volumen de datos para OpenWebUI (persiste en redeploys)
+"/app/backend/data" = "openwebui_data"

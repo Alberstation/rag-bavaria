@@ -11,7 +11,6 @@ ENV PORT=8080
 ENV ENABLE_OLLAMA_API=false
 
 # Directorio donde OpenWebUI guarda BD, chats, usuarios y configuración.
-# Se monta como volumen de Railway para que sobreviva a los redeploys.
-VOLUME ["/app/backend/data"]
+# Se monta como volumen de Railway desde railway.toml
 
 EXPOSE 8080
