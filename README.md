@@ -49,11 +49,37 @@ railway up
 |---|---|---|
 | `OPENAI_API_KEY` | ✅ | Tu clave de OpenAI (`sk-...`). |
 | `WEBUI_SECRET_KEY` | ✅ | Cadena aleatoria larga (`openssl rand -hex 32`). Fíjala una vez y no la cambies. |
+| `WEBUI_ADMIN_EMAIL` | ✅ | Email de la cuenta admin. Se crea sola en el primer arranque y se usa para dar de alta usuarios de `users.csv`. |
+| `WEBUI_ADMIN_PASSWORD` | ✅ | Contraseña de esa cuenta admin. |
 | `OPENAI_API_BASE_URL` | ⬜ | Por defecto `https://api.openai.com/v1`. Cámbiala para proveedores compatibles. |
-| `ENABLE_SIGNUP` | ⬜ | `false` tras crear tu admin para cerrar el registro. |
+| `ENABLE_SIGNUP` | ⬜ | Se cierra sola al definir `WEBUI_ADMIN_EMAIL`/`WEBUI_ADMIN_PASSWORD`. |
 | `WEBUI_NAME` | ⬜ | Nombre que se muestra en la interfaz. |
 
 > ⚠️ **No definas `PORT`.** Railway la inyecta y el contenedor ya la respeta.
+
+## Alta automática de usuarios (`users.csv`)
+
+Edita [`users.csv`](users.csv) en la raíz del repo para dar de alta usuarios:
+
+```csv
+name,email,password,role
+Juan Perez,juan.perez@example.com,ClaveTemporal123,user
+```
+
+- `role` puede ser `admin`, `user` o `pending`.
+- Las líneas que empiezan con `#` son comentarios.
+- La contraseña es solo la inicial: cada usuario puede cambiarla luego desde
+  **Settings → Account**.
+
+Al hacer `git push` (o cualquier redeploy en Railway), la imagen se
+reconstruye con el `users.csv` actualizado. En cada arranque del
+contenedor, [`scripts/sync_users.py`](scripts/sync_users.py) espera a que
+OpenWebUI esté listo, inicia sesión como admin (con `WEBUI_ADMIN_EMAIL` /
+`WEBUI_ADMIN_PASSWORD`) y da de alta a los usuarios que aún no existan. Es
+idempotente: los usuarios que ya existen se omiten sin error, así que
+puedes dejar el archivo con el histórico completo de usuarios dados de
+alta. Revisa los logs de Railway (busca las líneas `[sync_users]`) para
+confirmar qué se creó en cada deploy.
 
 ## Volumen (persistencia)
 

@@ -13,4 +13,14 @@ ENV ENABLE_OLLAMA_API=false
 # Directorio donde OpenWebUI guarda BD, chats, usuarios y configuración.
 # Se monta como volumen de Railway desde railway.toml
 
+# --- Alta automática de usuarios desde users.csv ---
+# Edita users.csv y haz push: en cada arranque del contenedor se sincroniza
+# la lista de usuarios contra OpenWebUI (ver scripts/sync_users.py).
+COPY users.csv /app/scripts/users.csv
+COPY scripts/sync_users.py /app/scripts/sync_users.py
+COPY scripts/entrypoint.sh /app/scripts/entrypoint.sh
+RUN chmod +x /app/scripts/entrypoint.sh
+
 EXPOSE 8080
+
+CMD ["bash", "/app/scripts/entrypoint.sh"]

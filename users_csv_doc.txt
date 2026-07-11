@@ -1,0 +1,9 @@
+# Edita este archivo para dar de alta usuarios en OpenWebUI.
+# Formato por columna: name,email,password,role
+# role puede ser: admin  o  user  o  pending
+# La contrasena es solo la inicial: cada usuario puede cambiarla despues
+# desde Settings -> Account una vez que inicia sesion.
+# Las lineas que empiezan con # son comentarios y se ignoran.
+#
+# Ejemplo (borra el # para activarlo):
+# Juan Perez,juan.perez@example.com,CambiaEstaClave123,user
